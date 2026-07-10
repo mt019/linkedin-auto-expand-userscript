@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.1.0 - 2026-07-11
+
+- Prefer language-independent LinkedIn expander selectors and `aria-expanded="false"` checks.
+- Keep text matching only as a fallback for visible expand labels.
+- Support collapsed LinkedIn text controls across UI languages when LinkedIn uses its standard expand components.
+
+## 1.0.1 - 2026-07-11
+
+- Match LinkedIn Traditional Chinese post expand controls such as `⋯⋯展開`.
+- Stop matching generic `More` / `更多` controls that can open footer or navigation menus.
+- Limit automatic clicks to LinkedIn content areas such as posts, comments, profile sections, and job descriptions.
+
 ## 1.0.0 - 2026-07-11
 
 - Initial release.

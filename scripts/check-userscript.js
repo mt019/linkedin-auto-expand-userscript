@@ -7,7 +7,7 @@ const source = fs.readFileSync(scriptPath, "utf8");
 const requiredHeaders = [
   "// ==UserScript==",
   "// @name         LinkedIn Auto Expand",
-  "// @version      1.0.0",
+  "// @version      1.1.0",
   "// @match        https://www.linkedin.com/*",
   "// @match        https://linkedin.com/*",
   "// @grant        none",
@@ -31,6 +31,11 @@ if (!source.includes("MutationObserver")) {
 
 if (!source.includes("EXPAND_TEXT_PATTERNS")) {
   console.error("Expected explicit expand text patterns.");
+  process.exit(1);
+}
+
+if (!source.includes("LINKEDIN_EXPANDER_SELECTOR")) {
+  console.error("Expected language-independent LinkedIn expander selectors.");
   process.exit(1);
 }
 

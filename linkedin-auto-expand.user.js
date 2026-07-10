@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         LinkedIn Auto Expand
 // @namespace    https://github.com/mt019/linkedin-auto-expand-userscript
-// @version      1.0.0
-// @description  Automatically expands LinkedIn posts, comments, profiles, job descriptions, and other collapsed text.
+// @version      1.1.0
+// @description  Automatically expands LinkedIn posts, comments, profiles, job descriptions, and other collapsed text across UI languages.
 // @author       mt019
 // @license      MIT
 // @match        https://www.linkedin.com/*
@@ -17,17 +17,20 @@
   const EXPAND_TEXT_PATTERNS = [
     /^see more$/i,
     /^show more$/i,
-    /^more$/i,
     /^read more$/i,
     /^view more$/i,
     /^load more$/i,
     /^show all$/i,
     /^show translation$/i,
+    /^(?:\.\.\.|…|⋯)+\s*see more$/i,
     /^顯示更多$/,
     /^查看更多$/,
     /^展开全文$/,
     /^展開全文$/,
-    /^更多$/,
+    /^展开$/,
+    /^展開$/,
+    /^(?:\.\.\.|…|⋯)+\s*展开$/,
+    /^(?:\.\.\.|…|⋯)+\s*展開$/,
     /^显示更多$/,
     /^顯示全部$/,
     /^显示全部$/,
@@ -45,16 +48,63 @@
   ];
 
   const CLICKABLE_SELECTOR = [
-    "button",
-    "a",
-    '[role="button"]',
+    ".feed-shared-update-v2 button",
+    ".feed-shared-update-v2 a",
+    '.feed-shared-update-v2 [role="button"]',
+    ".occludable-update button",
+    ".occludable-update a",
+    '.occludable-update [role="button"]',
+    '[data-urn*="activity"] button',
+    '[data-urn*="activity"] a',
+    '[data-urn*="activity"] [role="button"]',
+    ".update-components-text button",
+    ".update-components-text a",
+    '.update-components-text [role="button"]',
+    ".comments-comment-item button",
+    ".comments-comment-item a",
+    '.comments-comment-item [role="button"]',
+    ".jobs-description button",
+    ".jobs-description a",
+    '.jobs-description [role="button"]',
+    ".pvs-list button",
+    ".pvs-list a",
+    '.pvs-list [role="button"]',
     ".feed-shared-inline-show-more-text__see-more-less-toggle",
     ".inline-show-more-text__button",
     ".lt-line-clamp__more",
     ".comments-comment-item__inline-show-more-text",
   ].join(",");
 
+  const LINKEDIN_EXPANDER_SELECTOR = [
+    ".feed-shared-inline-show-more-text__see-more-less-toggle",
+    ".inline-show-more-text__button",
+    ".lt-line-clamp__more",
+    ".comments-comment-item__inline-show-more-text",
+    ".see-more-less-toggle",
+    ".see-more-less-toggle__button",
+    '[data-test-inline-show-more-text="see-more-less-toggle"]',
+  ].join(",");
+
   const CLICKED_MARK = "data-linkedin-auto-expand-clicked";
+  const CONTENT_ANCESTOR_SELECTOR = [
+    ".feed-shared-update-v2",
+    ".occludable-update",
+    '[data-urn*="activity"]',
+    ".update-components-text",
+    ".comments-comment-item",
+    ".jobs-description",
+    ".pvs-list",
+    ".scaffold-finite-scroll__content",
+  ].join(",");
+  const EXCLUDED_ANCESTOR_SELECTOR = [
+    "header",
+    "footer",
+    "nav",
+    '[role="navigation"]',
+    '[role="dialog"]',
+    ".global-footer",
+    ".artdeco-global-alert",
+  ].join(",");
   const SCAN_INTERVAL_MS = 1200;
   const MUTATION_DEBOUNCE_MS = 250;
   const MAX_TEXT_LENGTH = 80;
@@ -96,8 +146,33 @@
     return combined.some((value) => EXPAND_TEXT_PATTERNS.some((pattern) => pattern.test(value)));
   }
 
+  function isExcluded(element) {
+    return Boolean(element.closest(EXCLUDED_ANCESTOR_SELECTOR));
+  }
+
+  function isInsideContent(element) {
+    return Boolean(element.closest(CONTENT_ANCESTOR_SELECTOR));
+  }
+
+  function isCollapsedLinkedInExpander(element) {
+    if (!element.matches(LINKEDIN_EXPANDER_SELECTOR)) {
+      return false;
+    }
+
+    const expanded = element.getAttribute("aria-expanded");
+    if (expanded === "true") {
+      return false;
+    }
+
+    return isInsideContent(element);
+  }
+
   function clickExpander(element) {
-    if (element.hasAttribute(CLICKED_MARK) || !isVisible(element) || !looksLikeExpander(element)) {
+    if (element.hasAttribute(CLICKED_MARK) || isExcluded(element) || !isVisible(element)) {
+      return false;
+    }
+
+    if (!isCollapsedLinkedInExpander(element) && !looksLikeExpander(element)) {
       return false;
     }
 
