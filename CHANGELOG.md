@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.0 - 2026-07-15
+
+- Convert the existing LinkedIn userscript into a unified social auto-expand userscript.
+- Add Facebook support for post text expand controls and bounded feed preloading.
+- Introduce `SITE_PROFILES` so future site support can be added without changing the shared engine.
+- Keep the existing release asset filename, `linkedin-auto-expand.user.js`, for operational continuity.
+
 ## 1.2.0 - 2026-07-11
 
 - Add bounded background preloading for additional LinkedIn feed items.

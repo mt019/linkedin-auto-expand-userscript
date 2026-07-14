@@ -1,18 +1,23 @@
-# LinkedIn Auto Expand Userscript
+# Social Auto Expand Userscript
 
-A Tampermonkey-compatible userscript that automatically expands collapsed LinkedIn text and preloads additional feed items across UI languages.
+A Tampermonkey-compatible userscript that automatically expands collapsed social feed text and preloads additional feed items.
 
-It clicks visible expand controls such as:
+The project is operations-oriented: one userscript, one release stream, and per-site profiles inside `SITE_PROFILES`.
 
-- See more
-- Show more
-- Read more
-- 展开全文 / 展開全文
-- 查看更多 / 顯示更多
+The install asset keeps the original filename, `linkedin-auto-expand.user.js`, so the existing release workflow and old install link continue to work.
 
-The script is intentionally conservative: it prefers LinkedIn's own collapsed text controls and only falls back to short, visible expand labels. It avoids collapse actions such as "see less".
+## Supported Sites
 
-It also preloads additional feed items in the background by briefly triggering LinkedIn's infinite-scroll loading point and restoring the original viewport position.
+- LinkedIn
+- Facebook
+
+## Behavior
+
+- Expands visible collapsed text controls inside supported feed/post content areas.
+- Supports common English, Simplified Chinese, and Traditional Chinese expand labels.
+- Uses site-specific component selectors when available, then short visible text labels as fallback.
+- Preloads more feed items by briefly triggering each site's infinite-scroll loading point and restoring the original viewport position.
+- Pauses background preloading during recent user activity and modal/dialog states.
 
 ## Install
 
@@ -20,22 +25,29 @@ It also preloads additional feed items in the background by briefly triggering L
 2. Open the raw userscript file:
    `https://github.com/mt019/linkedin-auto-expand-userscript/releases/latest/download/linkedin-auto-expand.user.js`
 3. Confirm installation in the userscript manager.
-4. Open or refresh LinkedIn.
+4. Open or refresh LinkedIn or Facebook.
 
-## Supported Pages
-
-The script runs on:
+## Supported URLs
 
 - `https://www.linkedin.com/*`
 - `https://linkedin.com/*`
+- `https://www.facebook.com/*`
+- `https://web.facebook.com/*`
+- `https://m.facebook.com/*`
 
-It is designed for feeds, comments, profiles, articles, company pages, and job pages across LinkedIn UI languages.
+## Adding Another Site
 
-## Notes
+Add one object to `SITE_PROFILES` with:
 
-LinkedIn changes its DOM often. This script avoids relying on button language and combines LinkedIn expand component selectors, `aria-expanded="false"`, content-area checks, and visible fallback labels.
+- `hostPattern`
+- `clickableSelectors`
+- `componentSelectors`
+- `contentAncestorSelectors`
+- `excludedAncestorSelectors`
+- `extraExpandTextPatterns`
+- `blockingDialogSelector`
 
-Background preloading is intentionally bounded. It pauses during recent user activity, skips modal/dialog states, and stops after a limited number of stable-height checks.
+Keep all site-specific logic in the profile. The shared scan, click, and preload engine should remain generic.
 
 ## Development
 

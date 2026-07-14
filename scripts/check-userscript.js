@@ -6,15 +6,28 @@ const source = fs.readFileSync(scriptPath, "utf8");
 
 const requiredHeaders = [
   "// ==UserScript==",
-  "// @name         LinkedIn Auto Expand",
-  "// @version      1.2.0",
+  "// @name         Social Auto Expand",
+  "// @version      2.0.0",
   "// @match        https://www.linkedin.com/*",
   "// @match        https://linkedin.com/*",
+  "// @match        https://www.facebook.com/*",
+  "// @match        https://web.facebook.com/*",
+  "// @match        https://m.facebook.com/*",
   "// @grant        none",
   "// ==/UserScript==",
 ];
 
+const requiredCodeMarkers = [
+  "SITE_PROFILES",
+  "id: \"linkedin\"",
+  "id: \"facebook\"",
+  "MutationObserver",
+  "COMMON_EXPAND_TEXT_PATTERNS",
+  "preloadMoreContent",
+];
+
 const missingHeaders = requiredHeaders.filter((header) => !source.includes(header));
+const missingCodeMarkers = requiredCodeMarkers.filter((marker) => !source.includes(marker));
 
 if (missingHeaders.length > 0) {
   console.error("Missing required userscript headers:");
@@ -24,23 +37,11 @@ if (missingHeaders.length > 0) {
   process.exit(1);
 }
 
-if (!source.includes("MutationObserver")) {
-  console.error("Expected MutationObserver support for LinkedIn dynamic navigation.");
-  process.exit(1);
-}
-
-if (!source.includes("EXPAND_TEXT_PATTERNS")) {
-  console.error("Expected explicit expand text patterns.");
-  process.exit(1);
-}
-
-if (!source.includes("LINKEDIN_EXPANDER_SELECTOR")) {
-  console.error("Expected language-independent LinkedIn expander selectors.");
-  process.exit(1);
-}
-
-if (!source.includes("preloadMoreContent")) {
-  console.error("Expected background feed preloading support.");
+if (missingCodeMarkers.length > 0) {
+  console.error("Missing required implementation markers:");
+  for (const marker of missingCodeMarkers) {
+    console.error(`- ${marker}`);
+  }
   process.exit(1);
 }
 
