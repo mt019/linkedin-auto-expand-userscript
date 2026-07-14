@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Social Auto Expand
 // @namespace    https://github.com/mt019/social-auto-expand-userscript
-// @version      2.0.1
+// @version      2.0.2
 // @description  Automatically expands collapsed social feed text and preloads more feed items across supported sites.
 // @author       mt019
 // @license      MIT

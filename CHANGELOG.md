@@ -1,16 +1,21 @@
 # Changelog
 
+## 2.0.2 - 2026-07-15
+
+- Rename the userscript file and release asset to `social-auto-expand.user.js`.
+- Align repository name, package name, userscript metadata, documentation, and release asset naming.
+
 ## 2.0.1 - 2026-07-15
 
 - Rename the GitHub-facing project metadata to `social-auto-expand-userscript`.
-- Keep the release asset filename, `linkedin-auto-expand.user.js`, for update continuity.
+- Superseded by 2.0.2 for full asset-name alignment.
 
 ## 2.0.0 - 2026-07-15
 
 - Convert the existing LinkedIn userscript into a unified social auto-expand userscript.
 - Add Facebook support for post text expand controls and bounded feed preloading.
 - Introduce `SITE_PROFILES` so future site support can be added without changing the shared engine.
-- Keep the existing release asset filename, `linkedin-auto-expand.user.js`, for operational continuity.
+- Added unified release support; asset naming was later aligned in 2.0.2.
 
 ## 1.2.0 - 2026-07-11
 
