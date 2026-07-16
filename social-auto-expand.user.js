@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Social Auto Expand
 // @namespace    https://github.com/mt019/social-auto-expand-userscript
-// @version      2.0.2
+// @version      2.0.3
 // @description  Automatically expands collapsed social feed text and preloads more feed items across supported sites.
 // @author       mt019
 // @license      MIT
@@ -109,6 +109,7 @@
       ],
       extraExpandTextPatterns: [/^show translation$/i],
       blockingDialogSelector: '[role="dialog"], .artdeco-modal, .msg-overlay-conversation-bubble',
+      preloadMode: "jump-scroll",
     },
     {
       id: "facebook",
@@ -147,6 +148,7 @@
       ],
       extraExpandTextPatterns: [/^more$/i],
       blockingDialogSelector: '[role="dialog"], [aria-modal="true"]',
+      preloadMode: "disabled",
     },
   ];
 
@@ -294,6 +296,7 @@
   function shouldPreloadMoreContent() {
     return (
       document.visibilityState === "visible" &&
+      activeProfile.preloadMode !== "disabled" &&
       !isPreloading &&
       !isRecentUserActivity() &&
       !hasBlockingDialog() &&

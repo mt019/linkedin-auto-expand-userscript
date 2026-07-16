@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.3 - 2026-07-17
+
+- Disable Facebook background preloading to prevent periodic viewport jitter.
+- Keep Facebook post text auto-expansion enabled.
+- Add per-site `preloadMode` so preload behavior is explicit in each site profile.
+
 ## 2.0.2 - 2026-07-15
 
 - Rename the userscript file and release asset to `social-auto-expand.user.js`.

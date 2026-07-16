@@ -7,7 +7,7 @@ const source = fs.readFileSync(scriptPath, "utf8");
 const requiredHeaders = [
   "// ==UserScript==",
   "// @name         Social Auto Expand",
-  "// @version      2.0.2",
+  "// @version      2.0.3",
   "// @match        https://www.linkedin.com/*",
   "// @match        https://linkedin.com/*",
   "// @match        https://www.facebook.com/*",
@@ -24,6 +24,7 @@ const requiredCodeMarkers = [
   "MutationObserver",
   "COMMON_EXPAND_TEXT_PATTERNS",
   "preloadMoreContent",
+  "preloadMode: \"disabled\"",
 ];
 
 const missingHeaders = requiredHeaders.filter((header) => !source.includes(header));

@@ -16,8 +16,10 @@ The install asset uses the same project name as the repository: `social-auto-exp
 - Expands visible collapsed text controls inside supported feed/post content areas.
 - Supports common English, Simplified Chinese, and Traditional Chinese expand labels.
 - Uses site-specific component selectors when available, then short visible text labels as fallback.
-- Preloads more feed items by briefly triggering each site's infinite-scroll loading point and restoring the original viewport position.
+- Preloads more feed items on sites where background loading does not cause visible viewport jitter.
 - Pauses background preloading during recent user activity and modal/dialog states.
+
+Facebook background preloading is disabled because Facebook visibly reacts to programmatic scroll jumps. Facebook still auto-expands collapsed post text.
 
 ## Install
 
